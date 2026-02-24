@@ -1,12 +1,21 @@
 # wanbae.github.io
 
-Personal portfolio and infrastructure monitoring dashboard powered by GitHub Pages.
+nestor's portfolio - 100% AI-Powered Vibe Coding showcase
 
 ## 🎯 Overview
 
-This repository hosts my personal portfolio website and operational dashboards for monitoring my production services running on Oracle Cloud Infrastructure.
+이 저장소는 **AI 코딩 어시스턴트(Claude Code, Cursor)와 함께 100% 순수 바이브 코딩**으로 개발된 프로젝트들을 소개하는 포트폴리오입니다. 전통적인 복붙이나 튜토리얼 없이, 오직 아이디어와 대화만으로 실현된 실제 운영 중인 서비스들입니다.
 
-**Live Site**: https://wanbae.github.io (준비 중)
+**Live Site**: https://wanbae.github.io
+
+## 🤖 Vibe Coding Philosophy
+
+모든 프로젝트는:
+- ✅ AI 코딩 어시스턴트와의 대화로 개발
+- ✅ 전통적인 코드 복사 붙여넣기 없음
+- ✅ 튜토리얼 따라하기 없음
+- ✅ 순수하게 아이디어를 대화로 구현
+- ✅ 실제 운영 중인 프로덕션 서비스
 
 ## 📁 Structure
 
@@ -32,29 +41,33 @@ wanbae.github.io/
 └── .github/workflows/         # GitHub Actions (coming soon)
 ```
 
-## 🚀 Projects Showcased
+## 🚀 Projects Showcased (100% Vibe Coded)
 
 ### ⚡ ChargeBook
-전기차 충전 관리 시스템
+🤖 **AI 바이브 코딩으로 개발된 전기차 충전 관리 시스템**
 - **Tech Stack**: Django 5, Next.js 16, PostgreSQL 15, Celery, Redis
 - **Features**: Vehicle monitoring, Hyundai/Kia integration, PWA, Web push notifications
 - **URL**: https://ev.proudeng.com
+- **개발 방식**: Claude Code + Cursor AI를 활용한 순수 대화 기반 개발
 
 ### 🎧 Proud English
-영어 학습 오디오 스트리밍 서비스
+🤖 **AI 바이브 코딩으로 개발된 영어 학습 오디오 스트리밍 서비스**
 - **Tech Stack**: Flask 2, PostgreSQL 15, OpenResty, Redis
 - **Features**: Signed URL streaming, Real-time file sync, PWA
 - **URL**: https://audio.proudeng.com
+- **개발 방식**: 복붙 없이 AI와의 대화만으로 NAS 통합 구현
 
 ### 🏕️ Reserve Camping
-캠핑장 예약 알림 서비스
+🤖 **AI 바이브 코딩으로 개발된 캠핑장 예약 알림 서비스**
 - **Tech Stack**: Python 3.11, PostgreSQL 15, Celery, Telegram Bot
 - **Features**: Automated monitoring, Telegram notifications, Web dashboard
+- **개발 방식**: 아이디어부터 배포까지 AI 어시스턴트와 협업
 
 ### 🔌 SSCharger
-전기차 충전소 정보 서비스
+🤖 **AI 바이브 코딩으로 개발된 전기차 충전소 정보 서비스**
 - **Tech Stack**: Node.js, Redis
 - **Features**: Charging station info, Real-time data processing
+- **개발 방식**: 100% 대화형 개발
 
 ## 🛠️ Infrastructure
 
@@ -124,11 +137,18 @@ python -m http.server 8000
 
 MIT License - Feel free to use this as a template for your own portfolio!
 
+## 🤖 AI Tools Used
+
+- **Claude Code**: Anthropic의 CLI 기반 AI 코딩 어시스턴트
+- **Cursor AI**: AI 통합 코드 에디터
+- **Methodology**: 100% Vibe Coding - 대화로 코드 생성
+
 ## 📧 Contact
 
 - GitHub: [@wanbae](https://github.com/wanbae)
-- Email: your-email@example.com
+- Email: nestor@example.com
+- Developer: **nestor** (AI-Powered Full Stack Developer)
 
 ---
 
-**Built with** ❤️ using GitHub Pages
+**Built with** 🤖 AI, ❤️ Vibe Coding, and GitHub Pages
