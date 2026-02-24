@@ -1,0 +1,64 @@
+name: Update Service Status
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  check-services:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check service health
+        run: |
+          cat > status/status.json << 'EOFMARKER'
+          {
+            "updated": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "services": [
+              {
+                "name": "ChargeBook",
+                "icon": "⚡",
+                "url": "https://ev.proudeng.com",
+                "description": "전기차 충전 관리 시스템",
+                "status": "$(curl -sSL -o /dev/null -w '%{http_code}' --max-time 10 https://ev.proudeng.com || echo '000')",
+                "response_time": "$(curl -sSL -o /dev/null -w '%{time_total}' --max-time 10 https://ev.proudeng.com || echo '0')",
+                "last_check": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              },
+              {
+                "name": "Proud English",
+                "icon": "🎧",
+                "url": "https://audio.proudeng.com",
+                "description": "영어 학습 오디오 스트리밍",
+                "status": "$(curl -sSL -o /dev/null -w '%{http_code}' --max-time 10 https://audio.proudeng.com || echo '000')",
+                "response_time": "$(curl -sSL -o /dev/null -w '%{time_total}' --max-time 10 https://audio.proudeng.com || echo '0')",
+                "last_check": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              },
+              {
+                "name": "Reserve Camping (Staging)",
+                "icon": "🏕️",
+                "url": "http://146.56.185.73:6000",
+                "description": "캠핑장 예약 알림 (테스트)",
+                "status": "$(curl -sSL -o /dev/null -w '%{http_code}' --max-time 10 http://146.56.185.73:6000 || echo '000')",
+                "response_time": "$(curl -sSL -o /dev/null -w '%{time_total}' --max-time 10 http://146.56.185.73:6000 || echo '0')",
+                "last_check": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              }
+            ]
+          }
+          EOFMARKER
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add status/status.json
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update service status - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+          fi

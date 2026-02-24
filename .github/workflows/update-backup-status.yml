@@ -1,0 +1,98 @@
+name: Update Backup Status
+
+on:
+  schedule:
+    - cron: '0 3 * * *'  # Daily at 03:00 UTC (after backups complete)
+  workflow_dispatch:     # Manual trigger
+
+jobs:
+  collect-backup-status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.OCI_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.OCI_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Collect backup logs from OCI
+        run: |
+          # Create Python script to parse logs
+          cat > parse_backup.py << 'EOFPYTHON'
+          import json
+          import sys
+          from datetime import datetime
+
+          projects = [
+              {"name": "ChargeBook", "icon": "⚡", "db": "chargebook", "log": "/home/ubuntu/chargebook/logs/cron_backup.log"},
+              {"name": "Proud English", "icon": "🎧", "db": "proud_english", "log": "/home/ubuntu/proud_english/logs/cron_backup.log"},
+              {"name": "Reserve Camping", "icon": "🏕️", "db": "camping_alerts", "log": "/home/ubuntu/reserve-camping/logs/cron_backup.log"}
+          ]
+
+          backups = []
+
+          for project in projects:
+              try:
+                  # Read last line from log
+                  result = sys.stdin.readline().strip()
+                  if "백업 완료" in result:
+                      parts = result.split(" - ")
+                      if len(parts) >= 2:
+                          timestamp = parts[0]
+                          message = parts[1]
+                          size = message.split(": ")[-1] if ": " in message else "N/A"
+
+                          backups.append({
+                              "project": project["name"],
+                              "icon": project["icon"],
+                              "database": project["db"],
+                              "status": "success",
+                              "last_backup": timestamp.replace(" ", "T") + "Z",
+                              "size": size,
+                              "duration": "N/A",
+                              "message": message
+                          })
+              except Exception as e:
+                  backups.append({
+                      "project": project["name"],
+                      "icon": project["icon"],
+                      "database": project["db"],
+                      "status": "error",
+                      "last_backup": datetime.utcnow().isoformat() + "Z",
+                      "size": "0",
+                      "duration": "N/A",
+                      "message": f"Error: {str(e)}"
+                  })
+
+          output = {
+              "updated": datetime.utcnow().isoformat() + "Z",
+              "backups": backups
+          }
+
+          print(json.dumps(output, indent=2, ensure_ascii=False))
+          EOFPYTHON
+
+          # Fetch backup logs
+          ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.OCI_HOST }} << 'EOFSSH' | python parse_backup.py > backups/backup-status.json
+          tail -1 /home/ubuntu/chargebook/logs/cron_backup.log 2>/dev/null || echo "No log"
+          tail -1 /home/ubuntu/proud_english/logs/cron_backup.log 2>/dev/null || echo "No log"
+          tail -1 /home/ubuntu/reserve-camping/logs/cron_backup.log 2>/dev/null || echo "No log"
+          EOFSSH
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add backups/backup-status.json
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update backup status - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+          fi
