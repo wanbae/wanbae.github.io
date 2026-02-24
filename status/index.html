@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Status - Wan Bae</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="status.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+    </div>
+
+    <header class="page-header">
+        <div class="container">
+            <a href="../index.html" class="back-link">← Back to Home</a>
+            <h1>📊 Service Status</h1>
+            <p class="subtitle">실시간 서비스 상태 모니터링</p>
+            <div class="last-updated">
+                마지막 업데이트: <span id="last-updated">확인 중...</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="status-overview">
+            <h2>시스템 개요</h2>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="overview-icon">✅</div>
+                    <div class="overview-value" id="services-online">-</div>
+                    <div class="overview-label">서비스 운영 중</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">⚡</div>
+                    <div class="overview-value" id="avg-response">-</div>
+                    <div class="overview-label">평균 응답 시간</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">📈</div>
+                    <div class="overview-value" id="uptime">99.9%</div>
+                    <div class="overview-label">가동률 (30일)</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">🔄</div>
+                    <div class="overview-value" id="check-interval">5분</div>
+                    <div class="overview-label">체크 주기</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-status">
+            <h2>서비스 상태</h2>
+            <div id="services-list" class="services-list">
+                <!-- 서비스 카드가 동적으로 추가됩니다 -->
+                <div class="service-skeleton">
+                    <div class="skeleton-loader"></div>
+                </div>
+                <div class="service-skeleton">
+                    <div class="skeleton-loader"></div>
+                </div>
+                <div class="service-skeleton">
+                    <div class="skeleton-loader"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="response-time-chart">
+            <h2>응답 시간 추이</h2>
+            <div class="chart-container">
+                <canvas id="responseTimeChart"></canvas>
+            </div>
+        </section>
+
+        <section class="incidents">
+            <h2>최근 이슈</h2>
+            <div class="incident-list" id="incident-list">
+                <div class="incident-item success">
+                    <div class="incident-status">✅</div>
+                    <div class="incident-content">
+                        <h3>모든 시스템 정상</h3>
+                        <p>현재 모든 서비스가 정상적으로 운영되고 있습니다.</p>
+                        <span class="incident-time">2026-02-23 04:00:00 UTC</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Wan Bae. Powered by GitHub Actions.</p>
+            <p class="footer-note">Status data updated every 5 minutes</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="status.js"></script>
+</body>
+</html>

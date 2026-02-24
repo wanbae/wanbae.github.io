@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wan Bae - Full Stack Developer Portfolio">
+    <meta name="author" content="Wan Bae">
+    <title>Wan Bae - Full Stack Developer</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+    </div>
+
+    <header class="hero">
+        <div class="container">
+            <h1 class="fade-in">👨‍💻 Wan Bae</h1>
+            <p class="subtitle fade-in-delay">Full Stack Developer | DevOps Enthusiast</p>
+            <div class="hero-links fade-in-delay-2">
+                <a href="https://github.com/wanbae" target="_blank" class="btn btn-outline">GitHub</a>
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="projects" class="section">
+        <div class="container">
+            <h2 class="section-title">🚀 Projects</h2>
+            <div class="projects-grid">
+
+                <!-- ChargeBook -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>⚡ ChargeBook</h3>
+                        <span class="status-badge online">운영중</span>
+                    </div>
+                    <p class="project-description">
+                        전기차 충전 관리 시스템. 충전 기록 추적, 차량 상태 모니터링, 통계 분석 기능을 제공하는 PWA 애플리케이션입니다.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Django 5</span>
+                        <span class="tech-badge">Next.js 16</span>
+                        <span class="tech-badge">PostgreSQL</span>
+                        <span class="tech-badge">Celery</span>
+                        <span class="tech-badge">Docker</span>
+                    </div>
+                    <div class="project-features">
+                        <ul>
+                            <li>현대/기아 BlueLink/Connect 연동</li>
+                            <li>실시간 차량 상태 모니터링</li>
+                            <li>웹 푸시 알림 (VAPID)</li>
+                            <li>PWA 지원 (오프라인 모드)</li>
+                        </ul>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://ev.proudeng.com" target="_blank" class="link-btn">
+                            <span>🌐</span> Live Demo
+                        </a>
+                        <a href="https://github.com/wanbae/chargebook" target="_blank" class="link-btn">
+                            <span>📦</span> GitHub
+                        </a>
+                        <a href="#" class="link-btn disabled">
+                            <span>📚</span> Docs (준비중)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Proud English -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>🎧 Proud English</h3>
+                        <span class="status-badge online">운영중</span>
+                    </div>
+                    <p class="project-description">
+                        영어 학습용 오디오 스트리밍 웹 애플리케이션. NAS 기반 미디어 서버와 Signed URL 보안 스트리밍을 제공합니다.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Flask 2</span>
+                        <span class="tech-badge">PostgreSQL 15</span>
+                        <span class="tech-badge">OpenResty</span>
+                        <span class="tech-badge">Redis</span>
+                        <span class="tech-badge">ARM64</span>
+                    </div>
+                    <div class="project-features">
+                        <ul>
+                            <li>Signed URL 기반 보안 스트리밍</li>
+                            <li>실시간 파일 동기화 (inotify)</li>
+                            <li>QR 코드 빠른 접근</li>
+                            <li>PWA 지원 (Service Worker)</li>
+                        </ul>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://audio.proudeng.com" target="_blank" class="link-btn">
+                            <span>🌐</span> Live Demo
+                        </a>
+                        <a href="https://github.com/wanbae/proud_english" target="_blank" class="link-btn">
+                            <span>📦</span> GitHub
+                        </a>
+                        <a href="#" class="link-btn disabled">
+                            <span>📚</span> Docs (준비중)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Reserve Camping -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>🏕️ Reserve Camping</h3>
+                        <span class="status-badge online">운영중</span>
+                    </div>
+                    <p class="project-description">
+                        캠핑장 예약 알림 서비스. 실시간 예약 가능 여부를 모니터링하고 텔레그램으로 알림을 전송합니다.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Python 3.11</span>
+                        <span class="tech-badge">PostgreSQL 15</span>
+                        <span class="tech-badge">Celery</span>
+                        <span class="tech-badge">Redis</span>
+                        <span class="tech-badge">Telegram Bot</span>
+                    </div>
+                    <div class="project-features">
+                        <ul>
+                            <li>주기적 캠핑장 예약 상태 체크</li>
+                            <li>텔레그램 봇 알림</li>
+                            <li>사용자별 구독 관리</li>
+                            <li>웹 대시보드</li>
+                        </ul>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="link-btn disabled">
+                            <span>🌐</span> Private
+                        </a>
+                        <a href="https://github.com/wanbae/reserve-camping" target="_blank" class="link-btn">
+                            <span>📦</span> GitHub
+                        </a>
+                        <a href="#" class="link-btn disabled">
+                            <span>📚</span> Docs (준비중)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SSCharger -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>🔌 SSCharger</h3>
+                        <span class="status-badge online">운영중</span>
+                    </div>
+                    <p class="project-description">
+                        전기차 충전소 관련 서비스. 충전소 정보 제공 및 관리 기능을 제공합니다.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Node.js</span>
+                        <span class="tech-badge">Redis</span>
+                        <span class="tech-badge">Docker</span>
+                    </div>
+                    <div class="project-features">
+                        <ul>
+                            <li>충전소 정보 조회</li>
+                            <li>실시간 데이터 처리</li>
+                            <li>API 서비스</li>
+                        </ul>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="link-btn disabled">
+                            <span>🌐</span> Private
+                        </a>
+                        <a href="#" class="link-btn disabled">
+                            <span>📦</span> Private
+                        </a>
+                        <a href="#" class="link-btn disabled">
+                            <span>📚</span> Docs (준비중)
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="infrastructure" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">🛠️ Infrastructure & Operations</h2>
+            <div class="infra-grid">
+                <a href="status/index.html" class="infra-card">
+                    <div class="infra-icon">📊</div>
+                    <h3>Service Status</h3>
+                    <p>실시간 서비스 상태 모니터링</p>
+                </a>
+                <a href="backups/index.html" class="infra-card">
+                    <div class="infra-icon">💾</div>
+                    <h3>Backup Dashboard</h3>
+                    <p>데이터베이스 백업 현황</p>
+                </a>
+                <a href="monitoring/index.html" class="infra-card">
+                    <div class="infra-icon">🖥️</div>
+                    <h3>System Monitoring</h3>
+                    <p>인프라 메트릭 및 리소스 사용량</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech-stack" class="section">
+        <div class="container">
+            <h2 class="section-title">💻 Tech Stack</h2>
+            <div class="tech-categories">
+                <div class="tech-category">
+                    <h3>Backend</h3>
+                    <div class="tech-list">
+                        <span>Python (Django, Flask)</span>
+                        <span>Node.js</span>
+                        <span>PostgreSQL</span>
+                        <span>Redis</span>
+                        <span>Celery</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>Frontend</h3>
+                    <div class="tech-list">
+                        <span>React</span>
+                        <span>Next.js</span>
+                        <span>TypeScript</span>
+                        <span>Tailwind CSS</span>
+                        <span>PWA</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>DevOps</h3>
+                    <div class="tech-list">
+                        <span>Docker</span>
+                        <span>GitHub Actions</span>
+                        <span>Nginx</span>
+                        <span>Oracle Cloud</span>
+                        <span>Synology NAS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Wan Bae. Built with GitHub Pages.</p>
+            <div class="footer-links">
+                <a href="https://github.com/wanbae" target="_blank">GitHub</a>
+                <a href="mailto:your-email@example.com">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

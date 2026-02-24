@@ -1,0 +1,333 @@
+/* Status Page Specific Styles */
+
+.page-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+}
+
+.back-link {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+}
+
+.back-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.last-updated {
+    margin-top: var(--spacing-md);
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+/* Overview Section */
+
+.status-overview {
+    margin: var(--spacing-xl) 0;
+}
+
+.status-overview h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-primary);
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.overview-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.overview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px var(--shadow);
+}
+
+.overview-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.overview-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.overview-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* Services List */
+
+.services-status {
+    margin: var(--spacing-xl) 0;
+}
+
+.services-status h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-primary);
+}
+
+.services-list {
+    display: grid;
+    gap: var(--spacing-md);
+}
+
+.service-card {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: var(--transition);
+}
+
+.service-card:hover {
+    box-shadow: 0 8px 16px var(--shadow);
+}
+
+.service-card.online {
+    border-left: 4px solid var(--success);
+}
+
+.service-card.offline {
+    border-left: 4px solid var(--danger);
+}
+
+.service-card.degraded {
+    border-left: 4px solid var(--warning);
+}
+
+.service-icon {
+    font-size: 2.5rem;
+}
+
+.service-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-primary);
+}
+
+.service-url {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: block;
+    margin-bottom: var(--spacing-xs);
+}
+
+.service-url:hover {
+    color: var(--primary);
+}
+
+.service-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.service-status {
+    text-align: right;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.status-indicator.online {
+    background: var(--success);
+    color: white;
+}
+
+.status-indicator.offline {
+    background: var(--danger);
+    color: white;
+}
+
+.status-indicator.degraded {
+    background: var(--warning);
+    color: white;
+}
+
+.response-time {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.response-time strong {
+    color: var(--text-primary);
+}
+
+/* Skeleton Loader */
+
+.service-skeleton {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    height: 120px;
+}
+
+.skeleton-loader {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        var(--bg-secondary) 0%,
+        var(--bg-tertiary) 50%,
+        var(--bg-secondary) 100%
+    );
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Chart Section */
+
+.response-time-chart {
+    margin: var(--spacing-xl) 0;
+}
+
+.response-time-chart h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-primary);
+}
+
+.chart-container {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    height: 400px;
+}
+
+/* Incidents Section */
+
+.incidents {
+    margin: var(--spacing-xl) 0;
+}
+
+.incidents h2 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-primary);
+}
+
+.incident-list {
+    display: grid;
+    gap: var(--spacing-md);
+}
+
+.incident-item {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--spacing-md);
+}
+
+.incident-item.success {
+    border-left: 4px solid var(--success);
+}
+
+.incident-item.warning {
+    border-left: 4px solid var(--warning);
+}
+
+.incident-item.error {
+    border-left: 4px solid var(--danger);
+}
+
+.incident-status {
+    font-size: 2rem;
+}
+
+.incident-content h3 {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-primary);
+}
+
+.incident-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.incident-time {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+/* Footer Note */
+
+.footer-note {
+    margin-top: var(--spacing-xs);
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .service-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .service-status {
+        text-align: center;
+    }
+
+    .service-meta {
+        justify-content: center;
+    }
+
+    .chart-container {
+        height: 300px;
+    }
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup Dashboard - Wan Bae</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="backups.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+    </div>
+
+    <header class="page-header">
+        <div class="container">
+            <a href="../index.html" class="back-link">← Back to Home</a>
+            <h1>💾 Backup Dashboard</h1>
+            <p class="subtitle">데이터베이스 백업 현황 모니터링</p>
+            <div class="last-updated">
+                마지막 업데이트: <span id="last-updated">확인 중...</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="backup-overview">
+            <h2>백업 개요</h2>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <div class="overview-icon">✅</div>
+                    <div class="overview-value" id="successful-backups">-</div>
+                    <div class="overview-label">성공한 백업</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">📦</div>
+                    <div class="overview-value" id="total-size">-</div>
+                    <div class="overview-label">총 백업 크기</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">⏰</div>
+                    <div class="overview-value">02:00 UTC</div>
+                    <div class="overview-label">백업 스케줄</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-icon">🔄</div>
+                    <div class="overview-value">30일</div>
+                    <div class="overview-label">보관 기간</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="backup-status">
+            <h2>프로젝트별 백업 상태</h2>
+            <div id="backup-list" class="backup-list">
+                <!-- 백업 카드가 동적으로 추가됩니다 -->
+                <div class="backup-skeleton">
+                    <div class="skeleton-loader"></div>
+                </div>
+                <div class="backup-skeleton">
+                    <div class="skeleton-loader"></div>
+                </div>
+                <div class="backup-skeleton">
+                    <div class="skeleton-loader"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="backup-size-chart">
+            <h2>백업 크기 추이</h2>
+            <div class="chart-container">
+                <canvas id="backupSizeChart"></canvas>
+            </div>
+        </section>
+
+        <section class="backup-schedule">
+            <h2>📅 백업 스케줄</h2>
+            <div class="schedule-grid">
+                <div class="schedule-card">
+                    <h3>⚡ ChargeBook</h3>
+                    <div class="schedule-time">🕐 매일 02:00 UTC</div>
+                    <div class="schedule-path"><code>/home/ubuntu/chargebook/scripts/backup-prod-db.sh</code></div>
+                    <div class="schedule-log">로그: <code>/home/ubuntu/chargebook/logs/cron_backup.log</code></div>
+                </div>
+
+                <div class="schedule-card">
+                    <h3>🎧 Proud English</h3>
+                    <div class="schedule-time">🕐 매일 02:05 UTC</div>
+                    <div class="schedule-path"><code>/home/ubuntu/proud_english/scripts/backup-prod-db.sh</code></div>
+                    <div class="schedule-log">로그: <code>/home/ubuntu/proud_english/logs/cron_backup.log</code></div>
+                </div>
+
+                <div class="schedule-card">
+                    <h3>🏕️ Reserve Camping</h3>
+                    <div class="schedule-time">🕐 매일 02:10 UTC</div>
+                    <div class="schedule-path"><code>/home/ubuntu/reserve-camping/scripts/backup-prod-db.sh</code></div>
+                    <div class="schedule-log">로그: <code>/home/ubuntu/reserve-camping/logs/cron_backup.log</code></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="backup-warnings">
+            <h2>⚠️ 주의사항</h2>
+            <div class="warning-list">
+                <div class="warning-item info">
+                    <div class="warning-icon">ℹ️</div>
+                    <div class="warning-content">
+                        <h3>PostgreSQL Collation Version</h3>
+                        <p><strong>reserve-camping DB:</strong> collation version mismatch (2.36 → 2.41)</p>
+                        <p class="warning-detail">백업은 정상 작동하지만, 인덱스 손상 가능성이 있습니다. 유지보수 시간에 REINDEX를 권장합니다.</p>
+                    </div>
+                </div>
+
+                <div class="warning-item info">
+                    <div class="warning-icon">ℹ️</div>
+                    <div class="warning-content">
+                        <h3>ChargBook Collation</h3>
+                        <p><strong>chargebook DB:</strong> Alpine Linux musl libc 사용</p>
+                        <p class="warning-detail">collation 버전 정보가 없지만, 실제 문제는 없습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="backup-retention">
+            <h2>🗂️ 백업 보관 정책</h2>
+            <div class="retention-info">
+                <div class="retention-item">
+                    <div class="retention-icon">📅</div>
+                    <h3>일일 백업</h3>
+                    <p>최근 30일간의 백업 유지</p>
+                </div>
+                <div class="retention-item">
+                    <div class="retention-icon">📦</div>
+                    <h3>자동 정리</h3>
+                    <p>30일 이전 백업 자동 삭제</p>
+                </div>
+                <div class="retention-item">
+                    <div class="retention-icon">🔒</div>
+                    <h3>백업 위치</h3>
+                    <p>로컬 디스크 + NAS 동기화</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Wan Bae. Automated with Cron.</p>
+            <p class="footer-note">Backup data collected daily at 03:00 UTC</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="backups.js"></script>
+</body>
+</html>
