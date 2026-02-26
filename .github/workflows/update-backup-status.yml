@@ -5,6 +5,9 @@ on:
     - cron: '0 3 * * *'  # Daily at 03:00 UTC (after backups complete)
   workflow_dispatch:     # Manual trigger
 
+permissions:
+  contents: write
+
 jobs:
   collect-backup-status:
     runs-on: ubuntu-latest
