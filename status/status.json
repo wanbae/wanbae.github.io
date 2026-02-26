@@ -1,41 +1,32 @@
 {
-  "updated": "2026-02-23T04:30:00Z",
+  "updated": "2026-02-26T23:01:04Z",
   "services": [
     {
       "name": "ChargeBook",
       "icon": "⚡",
       "url": "https://ev.proudeng.com",
       "description": "전기차 충전 관리 시스템",
-      "status": 200,
-      "response_time": "0.245",
-      "last_check": "2026-02-23T04:30:00Z"
+      "status": "200",
+      "response_time": "0.719894",
+      "last_check": "2026-02-26T23:01:05Z"
     },
     {
       "name": "Proud English",
       "icon": "🎧",
       "url": "https://audio.proudeng.com",
       "description": "영어 학습 오디오 스트리밍",
-      "status": 200,
-      "response_time": "0.182",
-      "last_check": "2026-02-23T04:30:00Z"
+      "status": "200",
+      "response_time": "1.423157",
+      "last_check": "2026-02-26T23:01:07Z"
     },
     {
       "name": "Reserve Camping (Staging)",
       "icon": "🏕️",
-      "url": "https://camping-stg.proudeng.com",
+      "url": "http://146.56.185.73:6000",
       "description": "캠핑장 예약 알림 (테스트)",
-      "status": 200,
-      "response_time": "0.156",
-      "last_check": "2026-02-23T04:30:00Z"
-    },
-    {
-      "name": "SSCharger (Production)",
-      "icon": "🔌",
-      "url": "https://sscharger.proudeng.com",
-      "description": "충전소 정보 서비스",
-      "status": 200,
-      "response_time": "0.198",
-      "last_check": "2026-02-23T04:30:00Z"
+      "status": "000000",
+      "response_time": "10.0018810",
+      "last_check": "2026-02-26T23:01:27Z"
     }
   ]
 }
