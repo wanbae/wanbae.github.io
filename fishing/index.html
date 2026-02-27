@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>낚시날씨 - 전국 낚시포인트 CCTV &amp; 물때 대시보드</title>
+    <style>
+        /* ========================================
+           Variables & Reset
+           ======================================== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --accent: #38bdf8;
+            --accent-dark: #0ea5e9;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --info: #60a5fa;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.2s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           Header
+           ======================================== */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover { color: var(--text-primary); background: var(--bg-tertiary); }
+        .nav-tab.active { color: var(--accent); background: rgba(56, 189, 248, 0.1); }
+
+        .header-right a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .header-right a:hover { color: var(--accent); }
+
+        /* ========================================
+           Tab Content
+           ======================================== */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ========================================
+           Region Filter Bar
+           ======================================== */
+        .region-bar {
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .region-btn {
+            padding: 0.375rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .region-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .region-btn.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ========================================
+           Summary Cards
+           ======================================== */
+        .summary-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .summary-icon {
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+
+        .summary-icon.tide { background: rgba(56, 189, 248, 0.15); }
+        .summary-icon.weather { background: rgba(251, 191, 36, 0.15); }
+        .summary-icon.wave { background: rgba(52, 211, 153, 0.15); }
+        .summary-icon.lunar { background: rgba(167, 139, 250, 0.15); }
+
+        .summary-info h4 {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .summary-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .summary-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           CCTV Grid
+           ======================================== */
+        .cctv-section {
+            padding: 1.25rem 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .cctv-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .cctv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1rem;
+        }
+
+        .cctv-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .cctv-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .cctv-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cctv-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .cctv-placeholder .cam-icon {
+            font-size: 2.5rem;
+            opacity: 0.5;
+        }
+
+        .cctv-placeholder .cam-label {
+            font-size: 0.75rem;
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: var(--danger);
+            color: white;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .cctv-info {
+            padding: 0.75rem 1rem;
+        }
+
+        .cctv-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .cctv-location {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .cctv-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .fish-tag {
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .cctv-meta {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .meta-item {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item span { color: var(--text-secondary); font-weight: 500; }
+
+        /* ========================================
+           Tide & Weather Sections
+           ======================================== */
+        .info-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .info-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-body { padding: 1rem; }
+
+        /* Tide Table */
+        .tide-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .tide-table th {
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tide-table td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .tide-table tr:last-child td { border-bottom: none; }
+
+        .tide-high { color: var(--accent); font-weight: 600; }
+        .tide-low { color: var(--warning); font-weight: 600; }
+
+        /* Weather Cards */
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .weather-day {
+            text-align: center;
+            padding: 0.75rem 0.5rem;
+            border-radius: var(--radius-md);
+            background: var(--bg-tertiary);
+        }
+
+        .weather-day .day-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .weather-day .weather-icon { font-size: 1.75rem; margin-bottom: 0.25rem; }
+
+        .weather-day .temp {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .weather-day .temp-range {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .fishing-score {
+            display: inline-block;
+            margin-top: 0.375rem;
+            padding: 1px 6px;
+            border-radius: var(--radius-sm);
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+
+        .score-good { background: rgba(52, 211, 153, 0.2); color: var(--success); }
+        .score-ok { background: rgba(251, 191, 36, 0.2); color: var(--warning); }
+        .score-bad { background: rgba(248, 113, 113, 0.2); color: var(--danger); }
+
+        /* ========================================
+           Architecture / Tech Analysis Tab
+           ======================================== */
+        .arch-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .arch-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .arch-content h3 {
+            font-size: 1.125rem;
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .arch-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .arch-diagram {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .arch-diagram pre {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            white-space: pre;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.8rem;
+        }
+
+        .api-table th {
+            background: var(--bg-tertiary);
+            padding: 0.625rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .api-table td {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .api-table code {
+            background: var(--bg-primary);
+            padding: 1px 6px;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        .api-table tr:hover td { background: rgba(56, 189, 248, 0.03); }
+
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .code-block .comment { color: var(--text-muted); }
+        .code-block .string { color: var(--success); }
+        .code-block .key { color: var(--accent); }
+        .code-block .number { color: var(--warning); }
+
+        .roadmap {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .roadmap li {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .roadmap .phase-num {
+            background: var(--accent);
+            color: var(--bg-primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .roadmap .phase-title { font-weight: 600; color: var(--text-primary); }
+        .roadmap .phase-desc { font-size: 0.8rem; margin-top: 0.25rem; }
+
+        .tech-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .tech-option {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+        }
+
+        .tech-option h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .tech-option p {
+            font-size: 0.78rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-option .pros { color: var(--success); font-size: 0.75rem; }
+        .tech-option .cons { color: var(--danger); font-size: 0.75rem; }
+
+        /* ========================================
+           Footer
+           ======================================== */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* ========================================
+           Responsive
+           ======================================== */
+        @media (max-width: 768px) {
+            .header { flex-wrap: wrap; padding: 0.5rem 1rem; }
+            .nav-tab { padding: 0.375rem 0.625rem; font-size: 0.78rem; }
+            .summary-bar { grid-template-columns: 1fr 1fr; padding: 1rem; }
+            .cctv-grid { grid-template-columns: 1fr; }
+            .cctv-section { padding: 1rem; }
+            .info-panels { grid-template-columns: 1fr; padding: 0 1rem 1rem; }
+            .weather-grid { grid-template-columns: repeat(2, 1fr); }
+            .arch-content { padding: 1.5rem 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .summary-bar { grid-template-columns: 1fr; }
+            .header-right { display: none; }
+            .cctv-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <a href="#" class="logo">낚시날씨</a>
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="dashboard">대시보드</button>
+            <button class="nav-tab" data-tab="architecture">기술분석</button>
+        </nav>
+    </div>
+    <div class="header-right">
+        <a href="../index.html">Portfolio</a>
+    </div>
+</header>
+
+<!-- ==========================================
+     Dashboard Tab
+     ========================================== -->
+<div id="tab-dashboard" class="tab-content active">
+
+    <!-- Region Filter -->
+    <div class="region-bar">
+        <button class="region-btn active" data-region="all">전체</button>
+        <button class="region-btn" data-region="west">서해</button>
+        <button class="region-btn" data-region="south">남해</button>
+        <button class="region-btn" data-region="east">동해</button>
+        <button class="region-btn" data-region="jeju">제주</button>
+    </div>
+
+    <!-- Summary Bar -->
+    <div class="summary-bar">
+        <div class="summary-card">
+            <div class="summary-icon tide">🌊</div>
+            <div class="summary-info">
+                <h4>오늘 물때</h4>
+                <div class="summary-value">5물 (중사리)</div>
+                <div class="summary-sub">만조 06:42 / 18:58</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon weather">🌤</div>
+            <div class="summary-info">
+                <h4>주말 날씨</h4>
+                <div class="summary-value">맑음 12°C</div>
+                <div class="summary-sub">토요일 기준 · 풍속 3m/s</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon wave">🌬</div>
+            <div class="summary-info">
+                <h4>파고 / 풍속</h4>
+                <div class="summary-value">0.8m / NW 4m/s</div>
+                <div class="summary-sub">서해 중부 기준</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon lunar">🌙</div>
+            <div class="summary-info">
+                <h4>음력 물때</h4>
+                <div class="summary-value">음력 2월 10일</div>
+                <div class="summary-sub">7물때 기준 (서해)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CCTV Grid -->
+    <div class="cctv-section">
+        <div class="section-header">
+            <h2>실시간 낚시포인트 CCTV</h2>
+            <span class="cctv-count" id="cctvCount">12개 포인트</span>
+        </div>
+        <div class="cctv-grid" id="cctvGrid">
+            <!-- Dynamically rendered -->
+        </div>
+    </div>
+
+    <!-- Tide & Weather Panels -->
+    <div class="info-panels">
+        <div class="info-panel">
+            <div class="panel-header">🌊 오늘의 조석 (인천 기준)</div>
+            <div class="panel-body">
+                <table class="tide-table">
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>시각</th>
+                            <th>조위 (cm)</th>
+                            <th>상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tide-high">만조</td>
+                            <td>06:42</td>
+                            <td>812</td>
+                            <td><span class="tide-high">▲</span></td>
+                        </tr>
+                        <tr>
+                            <td class="tide-low">간조</td>
+                            <td>12:55</td>
+                            <td>198</td>
+                            <td><span class="tide-low">▼</span></td>
+                        </tr>
+                        <tr>
+                            <td class="tide-high">만조</td>
+                            <td>18:58</td>
+                            <td>845</td>
+                            <td><span class="tide-high">▲</span></td>
+                        </tr>
+                        <tr>
+                            <td class="tide-low">간조</td>
+                            <td>01:12 (+1)</td>
+                            <td>175</td>
+                            <td><span class="tide-low">▼</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">
+                    * 데모 데이터입니다. 실제 구현 시 KHOA 바다누리 API (tideObsPre) 연동
+                </p>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div class="panel-header">☀ 주말 낚시 날씨</div>
+            <div class="panel-body">
+                <div class="weather-grid">
+                    <div class="weather-day">
+                        <div class="day-label">금 2/27</div>
+                        <div class="weather-icon">🌤</div>
+                        <div class="temp">12°</div>
+                        <div class="temp-range">5° / 12°</div>
+                        <div class="fishing-score score-good">최적</div>
+                    </div>
+                    <div class="weather-day">
+                        <div class="day-label">토 2/28</div>
+                        <div class="weather-icon">☀</div>
+                        <div class="temp">14°</div>
+                        <div class="temp-range">6° / 14°</div>
+                        <div class="fishing-score score-good">최적</div>
+                    </div>
+                    <div class="weather-day">
+                        <div class="day-label">일 3/1</div>
+                        <div class="weather-icon">⛅</div>
+                        <div class="temp">10°</div>
+                        <div class="temp-range">4° / 10°</div>
+                        <div class="fishing-score score-ok">양호</div>
+                    </div>
+                    <div class="weather-day">
+                        <div class="day-label">월 3/2</div>
+                        <div class="weather-icon">🌧</div>
+                        <div class="temp">8°</div>
+                        <div class="temp-range">3° / 8°</div>
+                        <div class="fishing-score score-bad">부적합</div>
+                    </div>
+                </div>
+                <p style="font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">
+                    * 데모 데이터입니다. 실제 구현 시 기상청 단기예보 API 연동
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================
+     Architecture / Tech Analysis Tab
+     ========================================== -->
+<div id="tab-architecture" class="tab-content">
+    <div class="arch-content">
+        <h2>낚시날씨 기술분석</h2>
+        <p>
+            visitsan.com의 산악 CCTV 애그리게이터 패턴을 해양/낚시에 적용한 프로젝트입니다.
+            공공 해양 CCTV + 물때(조석예보) + 주말날씨를 한 화면에 큐레이션합니다.
+        </p>
+
+        <h3>시스템 아키텍처</h3>
+        <div class="arch-diagram">
+<pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                        사용자 브라우저                                │
+│                                                                     │
+│  ┌─── CCTV 영상 ───────────────────────────────────────────────┐   │
+│  │                                                              │   │
+│  │  iframe ──────► 해양수산부 연안포털 CCTV                      │   │
+│  │  iframe ──────► 국립해양조사원 조위관측소 캠                   │   │
+│  │  iframe ──────► 제주도인 CCTV (jejudoin.co.kr)               │   │
+│  │  hls.js ──────► KIOST 해양과학기지 (.m3u8)                   │   │
+│  │  img+refresh ─► 지자체 CCTV 스냅샷 (JPG/MJPEG)              │   │
+│  │                                                              │   │
+│  └──────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─── 데이터 API ──────────────────────────────────────────────┐   │
+│  │                                                              │   │
+│  │  fetch ───────► KHOA 바다누리 API  (조석/낚시지수/파고/수온)  │   │
+│  │  fetch ───────► 기상청 단기예보 API (3일 동네예보)            │   │
+│  │  fetch ───────► 기상청 해상예보 API (해상날씨 통보문)         │   │
+│  │  fetch ───────► 에어코리아 API     (PM10/PM2.5)              │   │
+│  │                                                              │   │
+│  └──────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+                   GitHub Pages (정적 호스팅)
+                   HTML + CSS + Vanilla JS
+</pre>
+        </div>
+
+        <h3>데이터 소스 &amp; API 상세</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>기능</th>
+                    <th>데이터 소스</th>
+                    <th>API 엔드포인트</th>
+                    <th>주요 파라미터</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>예측 조위 (물때)</td>
+                    <td>KHOA 바다누리</td>
+                    <td><code>khoa.go.kr/api/oceangrid/tideObsPre/search.do</code></td>
+                    <td>ServiceKey, ObsCode, Date, ResultType</td>
+                </tr>
+                <tr>
+                    <td>실측+예측 조위</td>
+                    <td>KHOA 바다누리</td>
+                    <td><code>khoa.go.kr/api/oceangrid/tideCurPre/search.do</code></td>
+                    <td>ServiceKey, ObsCode, Date</td>
+                </tr>
+                <tr>
+                    <td>바다낚시지수</td>
+                    <td>KHOA 바다누리</td>
+                    <td><code>khoa.go.kr/api/oceangrid/fcIndexOfType/search.do</code></td>
+                    <td>ServiceKey, Type=SF</td>
+                </tr>
+                <tr>
+                    <td>실측 파고</td>
+                    <td>KHOA 바다누리</td>
+                    <td><code>khoa.go.kr/api/oceangrid/obsWaveHight/search.do</code></td>
+                    <td>ServiceKey, ObsCode(TW_XXXX)</td>
+                </tr>
+                <tr>
+                    <td>수온</td>
+                    <td>KHOA 바다누리</td>
+                    <td><code>khoa.go.kr/api/oceangrid/tideObsTemp/search.do</code></td>
+                    <td>ServiceKey, ObsCode, Date</td>
+                </tr>
+                <tr>
+                    <td>단기예보 (동네예보)</td>
+                    <td>기상청 data.go.kr</td>
+                    <td><code>apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst</code></td>
+                    <td>nx, ny, base_date, base_time</td>
+                </tr>
+                <tr>
+                    <td>해상예보</td>
+                    <td>기상청 data.go.kr</td>
+                    <td><code>apis.data.go.kr/1360000/VilageFcstMsgService/getSeaFcst</code></td>
+                    <td>stnId</td>
+                </tr>
+                <tr>
+                    <td>미세먼지</td>
+                    <td>에어코리아</td>
+                    <td><code>apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty</code></td>
+                    <td>stationName, ver=1.3</td>
+                </tr>
+                <tr>
+                    <td>해양관측부이 (파고/수온)</td>
+                    <td>기상청 API Hub</td>
+                    <td><code>apihub.kma.go.kr/api/typ06/url/marine_large_zone.php</code></td>
+                    <td>tma_fc, tma_ef, Lzone, authKey</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>CCTV 소스 &amp; 임베딩 방식</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>CCTV 소스</th>
+                    <th>URL</th>
+                    <th>커버리지</th>
+                    <th>임베딩 방식</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>해양수산부 연안포털</td>
+                    <td><code>coast.mof.go.kr</code></td>
+                    <td>전국 해수욕장/해안 CCTV (수십 곳)</td>
+                    <td>iframe / HLS 추출</td>
+                </tr>
+                <tr>
+                    <td>바다타임</td>
+                    <td><code>badatime.com/cctv/{id}</code></td>
+                    <td>전국 80+ 해안/조위관측소</td>
+                    <td>iframe</td>
+                </tr>
+                <tr>
+                    <td>제주도인 CCTV</td>
+                    <td><code>cctv.jejudoin.co.kr</code></td>
+                    <td>제주 포구/항구/해수욕장</td>
+                    <td>iframe / HLS 추출</td>
+                </tr>
+                <tr>
+                    <td>KIOST 해양과학기지</td>
+                    <td><code>kors.kiost.ac.kr</code></td>
+                    <td>이어도/가거초/소청초</td>
+                    <td>hls.js (.m3u8 확인됨)</td>
+                </tr>
+                <tr>
+                    <td>한라산모아</td>
+                    <td><code>hallasan-moa.kr</code></td>
+                    <td>제주 해수욕장 (Wowza)</td>
+                    <td>hls.js (Wowza 패턴)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>CCTV 임베딩 기술 비교</h3>
+        <div class="tech-comparison">
+            <div class="tech-option">
+                <h4>iframe</h4>
+                <p>공공기관 기존 플레이어 페이지를 직접 임베딩</p>
+                <div class="pros">+ 구현 간단, 서버 불필요</div>
+                <div class="cons">- X-Frame-Options 차단 가능</div>
+            </div>
+            <div class="tech-option">
+                <h4>hls.js + video</h4>
+                <p>HLS .m3u8 스트림을 자체 video 태그로 재생</p>
+                <div class="pros">+ UI 자유도, 커스텀 컨트롤</div>
+                <div class="cons">- CORS 정책 확인 필요</div>
+            </div>
+            <div class="tech-option">
+                <h4>img + setInterval</h4>
+                <p>MJPEG/JPG 스냅샷을 주기적 갱신</p>
+                <div class="pros">+ 가장 호환성 높음</div>
+                <div class="cons">- 실시간 영상 아님</div>
+            </div>
+            <div class="tech-option">
+                <h4>WebRTC (참고)</h4>
+                <p>실시간 P2P 스트리밍 프로토콜</p>
+                <div class="pros">+ 초저지연 실시간</div>
+                <div class="cons">- 시그널링 서버 필요</div>
+            </div>
+        </div>
+
+        <h3>API 응답 예시 - KHOA 조석예보</h3>
+        <div class="code-block">
+<pre><span class="comment">// GET http://www.khoa.go.kr/api/oceangrid/tideObsPre/search.do</span>
+<span class="comment">//     ?ServiceKey=YOUR_KEY&ObsCode=DT_0001&Date=20260227&ResultType=json</span>
+
+{
+  <span class="key">"result"</span>: {
+    <span class="key">"data"</span>: [
+      {
+        <span class="key">"record_time"</span>: <span class="string">"2026-02-27 06:42:00"</span>,
+        <span class="key">"hl_code"</span>: <span class="string">"고조"</span>,
+        <span class="key">"tide_level"</span>: <span class="number">812</span>
+      },
+      {
+        <span class="key">"record_time"</span>: <span class="string">"2026-02-27 12:55:00"</span>,
+        <span class="key">"hl_code"</span>: <span class="string">"저조"</span>,
+        <span class="key">"tide_level"</span>: <span class="number">198</span>
+      },
+      {
+        <span class="key">"record_time"</span>: <span class="string">"2026-02-27 18:58:00"</span>,
+        <span class="key">"hl_code"</span>: <span class="string">"고조"</span>,
+        <span class="key">"tide_level"</span>: <span class="number">845</span>
+      }
+    ],
+    <span class="key">"meta"</span>: {
+      <span class="key">"obs_post_id"</span>: <span class="string">"DT_0001"</span>,
+      <span class="key">"obs_post_name"</span>: <span class="string">"인천"</span>,
+      <span class="key">"obs_lat"</span>: <span class="number">37.4517</span>,
+      <span class="key">"obs_lon"</span>: <span class="number">126.5922</span>
+    }
+  }
+}</pre>
+        </div>
+
+        <h3>API 응답 예시 - 기상청 단기예보</h3>
+        <div class="code-block">
+<pre><span class="comment">// GET http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst</span>
+<span class="comment">//     ?serviceKey=KEY&numOfRows=100&pageNo=1&dataType=JSON</span>
+<span class="comment">//     &base_date=20260227&base_time=0500&nx=52&ny=38</span>
+
+<span class="comment">// 주요 카테고리 코드:</span>
+<span class="comment">//   TMP: 1시간 기온 (°C)</span>
+<span class="comment">//   SKY: 하늘상태 (1:맑음 3:구름많음 4:흐림)</span>
+<span class="comment">//   PTY: 강수형태 (0:없음 1:비 2:비/눈 3:눈 4:소나기)</span>
+<span class="comment">//   POP: 강수확률 (%)</span>
+<span class="comment">//   WSD: 풍속 (m/s)</span>
+<span class="comment">//   WAV: 파고 (m) -- 해상예보에만 존재</span>
+<span class="comment">//   REH: 습도 (%)</span>
+
+{
+  <span class="key">"response"</span>: {
+    <span class="key">"body"</span>: {
+      <span class="key">"items"</span>: {
+        <span class="key">"item"</span>: [
+          {
+            <span class="key">"category"</span>: <span class="string">"TMP"</span>,
+            <span class="key">"fcstDate"</span>: <span class="string">"20260227"</span>,
+            <span class="key">"fcstTime"</span>: <span class="string">"0600"</span>,
+            <span class="key">"fcstValue"</span>: <span class="string">"5"</span>
+          },
+          {
+            <span class="key">"category"</span>: <span class="string">"WSD"</span>,
+            <span class="key">"fcstDate"</span>: <span class="string">"20260227"</span>,
+            <span class="key">"fcstTime"</span>: <span class="string">"0600"</span>,
+            <span class="key">"fcstValue"</span>: <span class="string">"3.2"</span>
+          }
+        ]
+      }
+    }
+  }
+}</pre>
+        </div>
+
+        <h3>확인된 HLS 스트림 URL</h3>
+        <div class="code-block">
+<pre><span class="comment">// KIOST 해양과학기지 - 실제 확인된 .m3u8 엔드포인트</span>
+
+<span class="string">"https://kors.kiost.ac.kr/cctv/IEODO/KBS.stream/playlist.m3u8"</span>     <span class="comment">// 이어도 옥상</span>
+<span class="string">"https://kors.kiost.ac.kr/cctv/IEODO/HLJB.stream/playlist.m3u8"</span>    <span class="comment">// 이어도 북쪽</span>
+<span class="string">"https://kors.kiost.ac.kr/cctv/GGC/GGC_ROOF.stream/playlist.m3u8"</span>  <span class="comment">// 가거초 Roof Deck</span>
+<span class="string">"https://kors.kiost.ac.kr/cctv/SCC/SCC_ROOF.stream/playlist.m3u8"</span>  <span class="comment">// 소청초 Roof Deck</span>
+<span class="string">"https://kors.kiost.ac.kr/cctv/SCC/SCC_NORTH.stream/playlist.m3u8"</span> <span class="comment">// 소청초 North</span>
+
+<span class="comment">// 한라산모아 (제주 해수욕장) - Wowza 패턴</span>
+<span class="string">"http://211.114.96.121:1935/jejusi7/11-30T.stream/playlist.m3u8"</span>   <span class="comment">// 이호테우 해수욕장</span></pre>
+        </div>
+
+        <h3>구현 로드맵</h3>
+        <ul class="roadmap">
+            <li>
+                <span class="phase-num">1</span>
+                <div>
+                    <div class="phase-title">Phase 1: UI 프로토타입 (현재)</div>
+                    <div class="phase-desc">정적 HTML/CSS/JS 대시보드. 플레이스홀더 CCTV 카드, 데모 조석/날씨 데이터. GitHub Pages 배포.</div>
+                </div>
+            </li>
+            <li>
+                <span class="phase-num">2</span>
+                <div>
+                    <div class="phase-title">Phase 2: CCTV 스트림 수집</div>
+                    <div class="phase-desc">실제 공공 CCTV .m3u8 URL 수집 (DevTools 네트워크 탭 분석). iframe 가능 여부 확인. hls.js 연동.</div>
+                </div>
+            </li>
+            <li>
+                <span class="phase-num">3</span>
+                <div>
+                    <div class="phase-title">Phase 3: API 연동</div>
+                    <div class="phase-desc">KHOA 바다누리 API 키 발급 + 조석예보 연동. 기상청 단기예보 API 연동. 에어코리아 미세먼지 연동.</div>
+                </div>
+            </li>
+            <li>
+                <span class="phase-num">4</span>
+                <div>
+                    <div class="phase-title">Phase 4: 고도화</div>
+                    <div class="phase-desc">바다낚시지수 스코어링, 음력 물때 자동계산, 포인트별 대상어종 DB, 즐겨찾기 (localStorage).</div>
+                </div>
+            </li>
+            <li>
+                <span class="phase-num">5</span>
+                <div>
+                    <div class="phase-title">Phase 5: CORS 프록시 (필요 시)</div>
+                    <div class="phase-desc">GitHub Pages에서 직접 API 호출 시 CORS 문제 발생하면 Cloudflare Workers 또는 Vercel Edge Function으로 프록시 구성.</div>
+                </div>
+            </li>
+        </ul>
+
+        <h3>API 키 발급 안내</h3>
+        <table class="api-table">
+            <thead>
+                <tr>
+                    <th>서비스</th>
+                    <th>발급처</th>
+                    <th>일일 제한</th>
+                    <th>비고</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>KHOA 바다누리</td>
+                    <td>khoa.go.kr (OpenAPI 신청)</td>
+                    <td>20,000건/일</td>
+                    <td>조석, 파고, 수온, 낚시지수</td>
+                </tr>
+                <tr>
+                    <td>기상청 data.go.kr</td>
+                    <td>data.go.kr (API 활용신청)</td>
+                    <td>10,000건/일</td>
+                    <td>단기예보, 해상예보, 중기예보</td>
+                </tr>
+                <tr>
+                    <td>에어코리아</td>
+                    <td>data.go.kr (API 활용신청)</td>
+                    <td>500건/일</td>
+                    <td>PM10, PM2.5, 오존, ver=1.3 필수</td>
+                </tr>
+                <tr>
+                    <td>기상청 API Hub</td>
+                    <td>apihub.kma.go.kr</td>
+                    <td>별도</td>
+                    <td>해양관측부이, 해양예보</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>낚시날씨 - 전국 낚시포인트 CCTV &amp; 물때 대시보드</p>
+    <p style="margin-top:0.5rem;">
+        데모 데이터 · 실제 서비스 구현 시 각 API 키 발급 필요 ·
+        <a href="../index.html">Portfolio</a>
+    </p>
+</footer>
+
+<script>
+// ========================================
+// CCTV Point Data
+// ========================================
+
+const FISHING_POINTS = [
+    {
+        id: 1, name: '인천 연안부두', region: 'west',
+        location: '인천광역시 중구 연안부두로',
+        fish: ['우럭', '노래미', '광어'],
+        tideStation: 'DT_0001', weatherGrid: { nx: 55, ny: 124 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 2, name: '군산 비응항', region: 'west',
+        location: '전북 군산시 비응도동',
+        fish: ['감성돔', '우럭', '농어'],
+        tideStation: 'DT_0015', weatherGrid: { nx: 56, ny: 92 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 3, name: '목포 북항', region: 'west',
+        location: '전남 목포시 항동',
+        fish: ['감성돔', '농어', '숭어'],
+        tideStation: 'DT_0028', weatherGrid: { nx: 50, ny: 67 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 4, name: '여수 오동도', region: 'south',
+        location: '전남 여수시 오동도로',
+        fish: ['감성돔', '볼락', '농어'],
+        tideStation: 'DT_0031', weatherGrid: { nx: 73, ny: 66 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 5, name: '통영 강구안', region: 'south',
+        location: '경남 통영시 중앙동',
+        fish: ['감성돔', '볼락', '학꽁치'],
+        tideStation: 'DT_0042', weatherGrid: { nx: 88, ny: 68 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 6, name: '부산 해운대', region: 'south',
+        location: '부산광역시 해운대구',
+        fish: ['감성돔', '볼락', '고등어'],
+        tideStation: 'DT_0048', weatherGrid: { nx: 99, ny: 75 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 7, name: '포항 구룡포', region: 'east',
+        location: '경북 포항시 남구 구룡포읍',
+        fish: ['감성돔', '볼락', '방어'],
+        tideStation: 'DT_0054', weatherGrid: { nx: 102, ny: 94 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 8, name: '강릉 주문진항', region: 'east',
+        location: '강원 강릉시 주문진읍',
+        fish: ['가자미', '우럭', '고등어'],
+        tideStation: 'DT_0059', weatherGrid: { nx: 92, ny: 131 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 9, name: '속초항', region: 'east',
+        location: '강원 속초시 중앙동',
+        fish: ['가자미', '우럭', '오징어'],
+        tideStation: 'DT_0062', weatherGrid: { nx: 87, ny: 141 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 10, name: '제주 한림항', region: 'jeju',
+        location: '제주 제주시 한림읍',
+        fish: ['벵에돔', '돌돔', '다금바리'],
+        tideStation: 'DT_0068', weatherGrid: { nx: 48, ny: 33 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 11, name: '서귀포항', region: 'jeju',
+        location: '제주 서귀포시 서귀동',
+        fish: ['벵에돔', '돌돔', '자리돔'],
+        tideStation: 'DT_0070', weatherGrid: { nx: 52, ny: 33 },
+        embedType: 'placeholder'
+    },
+    {
+        id: 12, name: '우도', region: 'jeju',
+        location: '제주 제주시 우도면',
+        fish: ['벵에돔', '돌돔', '참돔'],
+        tideStation: 'DT_0071', weatherGrid: { nx: 55, ny: 33 },
+        embedType: 'placeholder'
+    }
+];
+
+// ========================================
+// Tab Navigation
+// ========================================
+
+document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+});
+
+// ========================================
+// Region Filter
+// ========================================
+
+let currentRegion = 'all';
+
+document.querySelectorAll('.region-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentRegion = btn.dataset.region;
+        renderCCTVGrid();
+    });
+});
+
+// ========================================
+// Render CCTV Grid
+// ========================================
+
+function renderCCTVGrid() {
+    const grid = document.getElementById('cctvGrid');
+    const countEl = document.getElementById('cctvCount');
+
+    const filtered = currentRegion === 'all'
+        ? FISHING_POINTS
+        : FISHING_POINTS.filter(p => p.region === currentRegion);
+
+    countEl.textContent = filtered.length + '개 포인트';
+
+    grid.innerHTML = filtered.map(point => `
+        <div class="cctv-card" data-region="${point.region}">
+            <div class="cctv-video">
+                <div class="live-badge">LIVE</div>
+                <div class="cctv-placeholder">
+                    <div class="cam-icon">📹</div>
+                    <div class="cam-label">CCTV 연결 대기 (Phase 2)</div>
+                </div>
+            </div>
+            <div class="cctv-info">
+                <div class="cctv-title">${point.name}</div>
+                <div class="cctv-location">${point.location}</div>
+                <div class="cctv-tags">
+                    ${point.fish.map(f => `<span class="fish-tag">${f}</span>`).join('')}
+                </div>
+                <div class="cctv-meta">
+                    <div class="meta-item">조위: <span>${point.tideStation}</span></div>
+                    <div class="meta-item">격자: <span>${point.weatherGrid.nx},${point.weatherGrid.ny}</span></div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ========================================
+// Initialize
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderCCTVGrid();
+});
+</script>
+
+</body>
+</html>
