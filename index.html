@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="nestor - AI-Powered Full Stack Developer Portfolio">
+    <meta name="description" content="nestor - Full Stack Engineer Portfolio">
     <meta name="author" content="nestor">
-    <title>nestor - AI-Powered Full Stack Developer</title>
+    <title>nestor - Full Stack Engineer</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -15,68 +15,59 @@
 
     <header class="hero">
         <div class="container">
-            <h1 class="fade-in">🤖 nestor</h1>
-            <p class="subtitle fade-in-delay">AI-Powered Full Stack Developer | 100% Vibe Coding</p>
+            <h1 class="fade-in">nestor</h1>
+            <p class="subtitle fade-in-delay">Full Stack Engineer</p>
             <div class="hero-description fade-in-delay-2">
-                <p style="color: white; font-size: 1.1rem; margin-bottom: 1.5rem; opacity: 0.95;">
-                    모든 프로젝트는 <strong>AI 코딩 어시스턴트(Claude, Cursor)</strong>와 함께<br>
-                    <strong>100% 순수 바이브 코딩</strong>으로 개발되었습니다
+                <p style="color: white; font-size: 1.05rem; margin-bottom: 1.5rem; opacity: 0.9;">
+                    Django &middot; Next.js &middot; PostgreSQL &middot; Docker &middot; OCI<br>
+                    AI-assisted development with Claude Code &amp; Cursor
                 </p>
             </div>
             <div class="hero-links fade-in-delay-2">
                 <a href="https://github.com/wanbae" target="_blank" class="btn btn-outline">GitHub</a>
-                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#projects" class="btn btn-primary">Projects</a>
             </div>
         </div>
     </header>
 
     <section id="projects" class="section">
         <div class="container">
-            <h2 class="section-title">🚀 Projects</h2>
-            <div class="vibe-coding-badge" style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 1rem; color: white;">
-                <h3 style="margin-bottom: 0.5rem;">💎 100% Vibe Coding</h3>
-                <p style="opacity: 0.95; font-size: 1rem;">
-                    아래 모든 프로젝트는 AI 코딩 어시스턴트와의 협업을 통해<br>
-                    순수하게 바이브로 코딩되었습니다. 전통적인 복붙이나 튜토리얼 없이,<br>
-                    <strong>오직 아이디어와 대화만으로 실현된 프로젝트들</strong>입니다.
-                </p>
-            </div>
+            <h2 class="section-title">Projects</h2>
             <div class="projects-grid">
 
                 <!-- ChargeBook -->
                 <div class="project-card">
                     <div class="project-header">
-                        <h3>⚡ ChargeBook</h3>
-                        <span class="status-badge online">운영중</span>
+                        <h3>ChargeBook</h3>
+                        <span class="status-badge online">Production</span>
                     </div>
                     <p class="project-description">
-                        🤖 <strong>AI 바이브 코딩으로 개발</strong><br>
-                        전기차 충전 관리 시스템. 충전 기록 추적, 차량 상태 모니터링, 통계 분석 기능을 제공하는 PWA 애플리케이션입니다.
+                        EV 충전 기록 관리 &amp; 차량 상태 모니터링 플랫폼.
+                        현대/기아 커넥티드카 API(BlueLink/Connect)를 통해 SoC, 주행거리, 충전 이력을 자동 수집하고
+                        Celery 비동기 워커로 주기적 폴링 및 VAPID 웹 푸시 알림을 처리합니다.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-badge">Django 5</span>
                         <span class="tech-badge">Next.js 16</span>
                         <span class="tech-badge">PostgreSQL</span>
-                        <span class="tech-badge">Celery</span>
+                        <span class="tech-badge">Celery + Redis</span>
                         <span class="tech-badge">Docker</span>
+                        <span class="tech-badge">Nginx</span>
                     </div>
                     <div class="project-features">
                         <ul>
-                            <li>현대/기아 BlueLink/Connect 연동</li>
-                            <li>실시간 차량 상태 모니터링</li>
-                            <li>웹 푸시 알림 (VAPID)</li>
-                            <li>PWA 지원 (오프라인 모드)</li>
+                            <li>BlueLink/Connect OAuth2 연동 &mdash; SoC, 주행거리 자동 수집</li>
+                            <li>Celery Beat 스케줄러 + Redis 브로커 비동기 폴링</li>
+                            <li>VAPID 기반 Web Push 알림 (충전 완료/이상 감지)</li>
+                            <li>PWA &mdash; Service Worker 오프라인 캐시, 홈 화면 설치</li>
                         </ul>
                     </div>
                     <div class="project-links">
                         <a href="https://ev.proudeng.com" target="_blank" class="link-btn">
-                            <span>🌐</span> Live Demo
+                            <span>🌐</span> Production
                         </a>
                         <a href="https://github.com/wanbae/chargebook" target="_blank" class="link-btn">
                             <span>📦</span> GitHub
-                        </a>
-                        <a href="#" class="link-btn disabled">
-                            <span>📚</span> Docs (준비중)
                         </a>
                     </div>
                 </div>
@@ -84,37 +75,35 @@
                 <!-- Proud English -->
                 <div class="project-card">
                     <div class="project-header">
-                        <h3>🎧 Proud English</h3>
-                        <span class="status-badge online">운영중</span>
+                        <h3>Proud English</h3>
+                        <span class="status-badge online">Production</span>
                     </div>
                     <p class="project-description">
-                        🤖 <strong>AI 바이브 코딩으로 개발</strong><br>
-                        영어 학습용 오디오 스트리밍 웹 애플리케이션. NAS 기반 미디어 서버와 Signed URL 보안 스트리밍을 제공합니다.
+                        NAS 기반 영어 학습 오디오 스트리밍 서비스.
+                        Synology NAS를 미디어 원본 저장소로 사용하고, OpenResty(Nginx + Lua)에서
+                        HMAC-SHA256 Signed URL을 검증하여 인증된 요청만 스트리밍합니다.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-badge">Flask 2</span>
                         <span class="tech-badge">PostgreSQL 15</span>
                         <span class="tech-badge">OpenResty</span>
                         <span class="tech-badge">Redis</span>
-                        <span class="tech-badge">ARM64</span>
+                        <span class="tech-badge">ARM64 (OCI)</span>
                     </div>
                     <div class="project-features">
                         <ul>
-                            <li>Signed URL 기반 보안 스트리밍</li>
-                            <li>실시간 파일 동기화 (inotify)</li>
-                            <li>QR 코드 빠른 접근</li>
-                            <li>PWA 지원 (Service Worker)</li>
+                            <li>HMAC-SHA256 Signed URL &mdash; 만료 시간 + 경로 바인딩</li>
+                            <li>inotifywait 파일 변경 감지 &rarr; 메타데이터 자동 동기화</li>
+                            <li>OpenResty Lua 미들웨어 &mdash; URL 서명 검증 + 프록시</li>
+                            <li>QR 코드 기반 빠른 접근 + PWA Service Worker</li>
                         </ul>
                     </div>
                     <div class="project-links">
                         <a href="https://audio.proudeng.com" target="_blank" class="link-btn">
-                            <span>🌐</span> Live Demo
+                            <span>🌐</span> Production
                         </a>
                         <a href="https://github.com/wanbae/proud_english" target="_blank" class="link-btn">
                             <span>📦</span> GitHub
-                        </a>
-                        <a href="#" class="link-btn disabled">
-                            <span>📚</span> Docs (준비중)
                         </a>
                     </div>
                 </div>
@@ -122,37 +111,35 @@
                 <!-- Reserve Camping -->
                 <div class="project-card">
                     <div class="project-header">
-                        <h3>🏕️ Reserve Camping</h3>
-                        <span class="status-badge online">운영중</span>
+                        <h3>Reserve Camping</h3>
+                        <span class="status-badge online">Production</span>
                     </div>
                     <p class="project-description">
-                        🤖 <strong>AI 바이브 코딩으로 개발</strong><br>
-                        캠핑장 예약 알림 서비스. 실시간 예약 가능 여부를 모니터링하고 텔레그램으로 알림을 전송합니다.
+                        국립공원 캠핑장 예약 가용성 모니터링 &amp; 알림 시스템.
+                        Celery Beat로 예약 API를 주기 폴링하고, 빈 자리 감지 시
+                        Telegram Bot API를 통해 실시간 알림을 전송합니다.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-badge">Python 3.11</span>
+                        <span class="tech-badge">Django</span>
                         <span class="tech-badge">PostgreSQL 15</span>
-                        <span class="tech-badge">Celery</span>
-                        <span class="tech-badge">Redis</span>
-                        <span class="tech-badge">Telegram Bot</span>
+                        <span class="tech-badge">Celery + Redis</span>
+                        <span class="tech-badge">Telegram Bot API</span>
                     </div>
                     <div class="project-features">
                         <ul>
-                            <li>주기적 캠핑장 예약 상태 체크</li>
-                            <li>텔레그램 봇 알림</li>
-                            <li>사용자별 구독 관리</li>
-                            <li>웹 대시보드</li>
+                            <li>Celery Beat 스케줄러 &mdash; 설정 가능한 폴링 주기</li>
+                            <li>Telegram Bot API &mdash; 사용자별 구독 채널 관리</li>
+                            <li>예약 가용성 diff 감지 &mdash; 변경분만 알림</li>
+                            <li>관리자 웹 대시보드 &mdash; 모니터링 대상 / 구독자 관리</li>
                         </ul>
                     </div>
                     <div class="project-links">
-                        <a href="#" class="link-btn disabled">
-                            <span>🌐</span> Private
+                        <a href="https://camping.proudeng.com" target="_blank" class="link-btn">
+                            <span>🌐</span> Production
                         </a>
                         <a href="https://github.com/wanbae/reserve-camping" target="_blank" class="link-btn">
                             <span>📦</span> GitHub
-                        </a>
-                        <a href="#" class="link-btn disabled">
-                            <span>📚</span> Docs (준비중)
                         </a>
                     </div>
                 </div>
@@ -160,34 +147,35 @@
                 <!-- SSCharger -->
                 <div class="project-card">
                     <div class="project-header">
-                        <h3>🔌 SSCharger</h3>
-                        <span class="status-badge online">운영중</span>
+                        <h3>SSCharger</h3>
+                        <span class="status-badge online">Production</span>
                     </div>
                     <p class="project-description">
-                        🤖 <strong>AI 바이브 코딩으로 개발</strong><br>
-                        전기차 충전소 관련 서비스. 충전소 정보 제공 및 관리 기능을 제공합니다.
+                        전기차 충전소 실시간 상태 조회 API 서비스.
+                        환경부 공공 API 데이터를 Redis에 캐싱하고,
+                        위치 기반 최근접 충전소 검색 및 실시간 가용 상태를 제공합니다.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-badge">Node.js</span>
+                        <span class="tech-badge">Express</span>
                         <span class="tech-badge">Redis</span>
                         <span class="tech-badge">Docker</span>
+                        <span class="tech-badge">공공데이터 API</span>
                     </div>
                     <div class="project-features">
                         <ul>
-                            <li>충전소 정보 조회</li>
-                            <li>실시간 데이터 처리</li>
-                            <li>API 서비스</li>
+                            <li>환경부 충전소 API 연동 &mdash; 주기적 데이터 갱신</li>
+                            <li>Redis 캐시 레이어 &mdash; API 호출 최소화</li>
+                            <li>위치 기반 검색 &mdash; 좌표 기반 최근접 충전소</li>
+                            <li>RESTful API &mdash; 충전소 상태/통계 엔드포인트</li>
                         </ul>
                     </div>
                     <div class="project-links">
-                        <a href="#" class="link-btn disabled">
-                            <span>🌐</span> Private
+                        <a href="https://sscharger.proudeng.com" target="_blank" class="link-btn">
+                            <span>🌐</span> Production
                         </a>
                         <a href="#" class="link-btn disabled">
                             <span>📦</span> Private
-                        </a>
-                        <a href="#" class="link-btn disabled">
-                            <span>📚</span> Docs (준비중)
                         </a>
                     </div>
                 </div>
@@ -195,36 +183,38 @@
                 <!-- 낚시날씨 -->
                 <div class="project-card">
                     <div class="project-header">
-                        <h3>🎣 낚시날씨</h3>
-                        <span class="status-badge online">운영중</span>
+                        <h3>낚시날씨</h3>
+                        <span class="status-badge online">Production</span>
                     </div>
                     <p class="project-description">
-                        🤖 <strong>AI 바이브 코딩으로 개발</strong><br>
-                        전국 낚시포인트 CCTV &amp; 물때 대시보드. 공공 해양 CCTV, 조석예보, 주말날씨를 한 화면에 큐레이션하는 낚시 정보 서비스입니다.
+                        전국 낚시포인트 CCTV &amp; 물때 대시보드.
+                        공공 해양 CCTV(HLS/iframe), KHOA 조석예보 API, 기상청 단기예보 API를
+                        클라이언트 사이드에서 애그리게이트하는 정적 SPA입니다.
                     </p>
                     <div class="tech-stack">
-                        <span class="tech-badge">HTML5</span>
-                        <span class="tech-badge">CSS Grid</span>
                         <span class="tech-badge">Vanilla JS</span>
-                        <span class="tech-badge">공공API</span>
+                        <span class="tech-badge">CSS Grid</span>
+                        <span class="tech-badge">hls.js</span>
+                        <span class="tech-badge">KHOA API</span>
+                        <span class="tech-badge">기상청 API</span>
                     </div>
                     <div class="project-features">
                         <ul>
-                            <li>전국 낚시포인트 실시간 CCTV</li>
-                            <li>물때표 / 조석예보 (KHOA API)</li>
-                            <li>주말 낚시 날씨 (기상청 API)</li>
-                            <li>낚시 적합도 점수</li>
+                            <li>12개 포인트 CCTV 그리드 &mdash; iframe / HLS / 스냅샷</li>
+                            <li>KHOA 바다누리 API &mdash; 조석예보, 낚시지수, 파고</li>
+                            <li>기상청 단기예보 + 해상예보 API 연동</li>
+                            <li>지역 필터링 (서해/남해/동해/제주)</li>
                         </ul>
                     </div>
                     <div class="project-links">
                         <a href="fishing/index.html" class="link-btn">
-                            <span>🌐</span> Live Demo
+                            <span>🌐</span> Demo
                         </a>
                         <a href="https://github.com/wanbae/wanbae.github.io" target="_blank" class="link-btn">
                             <span>📦</span> GitHub
                         </a>
-                        <a href="fishing/index.html#tab-architecture" class="link-btn">
-                            <span>📚</span> 기술분석
+                        <a href="fishing/index.html" onclick="setTimeout(()=>{document.querySelector('[data-tab=architecture]')&&document.querySelector('[data-tab=architecture]').click()},500)" class="link-btn">
+                            <span>📐</span> Architecture
                         </a>
                     </div>
                 </div>
@@ -235,22 +225,22 @@
 
     <section id="infrastructure" class="section section-alt">
         <div class="container">
-            <h2 class="section-title">🛠️ Infrastructure & Operations</h2>
+            <h2 class="section-title">Infrastructure</h2>
             <div class="infra-grid">
                 <a href="status/index.html" class="infra-card">
                     <div class="infra-icon">📊</div>
                     <h3>Service Status</h3>
-                    <p>실시간 서비스 상태 모니터링</p>
+                    <p>GitHub Actions 5분 주기 헬스체크</p>
                 </a>
                 <a href="backups/index.html" class="infra-card">
                     <div class="infra-icon">💾</div>
                     <h3>Backup Dashboard</h3>
-                    <p>데이터베이스 백업 현황</p>
+                    <p>PostgreSQL 일일 백업 현황</p>
                 </a>
                 <a href="monitoring/index.html" class="infra-card">
                     <div class="infra-icon">🖥️</div>
                     <h3>System Monitoring</h3>
-                    <p>인프라 메트릭 및 리소스 사용량</p>
+                    <p>OCI ARM64 인프라 메트릭</p>
                 </a>
             </div>
         </div>
@@ -258,45 +248,42 @@
 
     <section id="tech-stack" class="section">
         <div class="container">
-            <h2 class="section-title">💻 Tech Stack & AI Tools</h2>
+            <h2 class="section-title">Tech Stack</h2>
             <div class="tech-categories">
-                <div class="tech-category" style="grid-column: 1 / -1; background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%); border: 2px solid var(--primary);">
-                    <h3 style="color: var(--primary);">🤖 AI Coding Assistants</h3>
-                    <div class="tech-list">
-                        <span style="background: var(--primary); color: white; font-weight: bold;">Claude Code (Anthropic)</span>
-                        <span style="background: var(--primary); color: white; font-weight: bold;">Cursor AI Editor</span>
-                        <span>100% Vibe Coding Methodology</span>
-                        <span>No Copy-Paste, Only Conversation</span>
-                    </div>
-                </div>
                 <div class="tech-category">
                     <h3>Backend</h3>
                     <div class="tech-list">
-                        <span>Python (Django, Flask)</span>
-                        <span>Node.js</span>
-                        <span>PostgreSQL</span>
-                        <span>Redis</span>
-                        <span>Celery</span>
+                        <span>Python &mdash; Django, Flask, Celery</span>
+                        <span>Node.js &mdash; Express</span>
+                        <span>PostgreSQL 15</span>
+                        <span>Redis (캐시 + 메시지 브로커)</span>
                     </div>
                 </div>
                 <div class="tech-category">
                     <h3>Frontend</h3>
                     <div class="tech-list">
-                        <span>React</span>
-                        <span>Next.js</span>
-                        <span>TypeScript</span>
+                        <span>Next.js &mdash; React, TypeScript</span>
                         <span>Tailwind CSS</span>
-                        <span>PWA</span>
+                        <span>PWA &mdash; Service Worker, Web Push</span>
+                        <span>Vanilla JS &mdash; 경량 SPA</span>
                     </div>
                 </div>
                 <div class="tech-category">
-                    <h3>DevOps</h3>
+                    <h3>Infra &amp; DevOps</h3>
                     <div class="tech-list">
-                        <span>Docker</span>
-                        <span>GitHub Actions</span>
-                        <span>Nginx</span>
-                        <span>Oracle Cloud</span>
-                        <span>Synology NAS</span>
+                        <span>Docker &amp; Docker Compose</span>
+                        <span>OCI ARM64 (Ampere A1)</span>
+                        <span>Nginx / OpenResty</span>
+                        <span>GitHub Actions CI/CD</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>Dev Tools</h3>
+                    <div class="tech-list">
+                        <span>Claude Code (Anthropic)</span>
+                        <span>Cursor AI Editor</span>
+                        <span>Git &mdash; trunk-based flow</span>
+                        <span>Synology NAS &mdash; 미디어 스토리지</span>
                     </div>
                 </div>
             </div>
@@ -305,13 +292,9 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 nestor. Built with 🤖 AI & ❤️ Vibe Coding.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.8;">
-                Powered by Claude Code + Cursor AI | GitHub Pages
-            </p>
+            <p>&copy; 2026 nestor</p>
             <div class="footer-links">
                 <a href="https://github.com/wanbae" target="_blank">GitHub</a>
-                <a href="mailto:nestor@example.com">Contact</a>
             </div>
         </div>
     </footer>
