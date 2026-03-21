@@ -14,10 +14,10 @@ const SERVICES = [
         description: '영어 학습 오디오 스트리밍'
     },
     {
-        name: 'Reserve Camping (Staging)',
+        name: 'Reserve Camping',
         icon: '🏕️',
-        url: 'https://camping-stg.proudeng.com',
-        description: '캠핑장 예약 알림 (테스트)'
+        url: 'https://camping.proudeng.com',
+        description: '캠핑장 예약 알림 서비스'
     },
     {
         name: 'SSCharger (Production)',
