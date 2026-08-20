@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-20T19:22:45Z",
+  "updated": "2026-08-20T19:52:56Z",
   "services": [
     {
       "name": "ChargeBook",
@@ -7,8 +7,8 @@
       "url": "https://ev.proudeng.com",
       "description": "전기차 충전 관리 시스템",
       "status": "200",
-      "response_time": "0.675433",
-      "last_check": "2026-08-20T19:22:47Z"
+      "response_time": "0.678279",
+      "last_check": "2026-08-20T19:52:58Z"
     },
     {
       "name": "Proud English",
@@ -16,8 +16,8 @@
       "url": "https://audio.proudeng.com",
       "description": "영어 학습 오디오 스트리밍",
       "status": "200",
-      "response_time": "0.531141",
-      "last_check": "2026-08-20T19:22:49Z"
+      "response_time": "2.282337",
+      "last_check": "2026-08-20T19:53:01Z"
     },
     {
       "name": "Reserve Camping",
@@ -25,8 +25,8 @@
       "url": "https://camping.proudeng.com",
       "description": "캠핑장 예약 알림 서비스",
       "status": "526",
-      "response_time": "0.453576",
-      "last_check": "2026-08-20T19:22:50Z"
+      "response_time": "0.876176",
+      "last_check": "2026-08-20T19:53:03Z"
     }
   ]
 }
